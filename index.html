@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herb Café — Корейская кухня и чайная лавка в Бишкеке</title>
+  <meta name="description" content="Herb Café — корейская кухня, чайная лавка, соджу и авторские коктейли, свежая выпечка каждый день. Бишкек, ул. Токтогула 169.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+      /* ============ TOKENS ============ */
+      :root{
+          --cream:#FFF6E8;
+          --paper:#FFFDF8;
+          --ink:#241429;
+          --coral:#FF5C4D;
+          --coral-dark:#E23F30;
+          --mango:#FFB648;
+          --bubble:#FF8FBF;
+          --denim:#233A4A;
+          --line:rgba(36,20,41,0.12);
+          --r-lg:32px;
+          --r-md:20px;
+          --r-sm:12px;
+          --shadow:0 14px 34px rgba(36,20,41,0.14);
+      }
+      *{margin:0;padding:0;box-sizing:border-box;}
+      html{scroll-behavior:smooth;}
+      body{
+          font-family:'Manrope',sans-serif;
+          background:var(--cream);
+          color:var(--ink);
+          overflow-x:hidden;
+          -webkit-font-smoothing:antialiased;
+      }
+      h1,h2,h3,.display{font-family:'Unbounded',sans-serif;}
+      .hand{font-family:'Caveat',cursive;}
+      img,svg{display:block;max-width:100%;}
+      a{color:inherit;text-decoration:none;}
+      button{font-family:inherit;border:none;background:none;cursor:pointer;}
+      ul{list-style:none;}
+      .container{width:100%;max-width:1200px;margin:0 auto;padding:0 28px;}
+      section{position:relative;}
+
+      /* ============ LANGUAGE SWITCH ============ */
+      .lang-en{display:none;}
+      body.en .lang-ru{display:none;}
+      body.en .lang-en{display:inline;}
+
+      /* ============ REVEAL ANIMATION ============ */
+      .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+      .reveal.in{opacity:1;transform:translateY(0);}
+      .reveal2{opacity:0;transform:scale(.9) rotate(var(--rot,0deg));transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1);}
+      .reveal2.in{opacity:1;transform:scale(1) rotate(var(--rot,0deg));}
+
+      @media (prefers-reduced-motion: reduce){
+          *{animation:none !important; transition:none !important;}
+          .reveal,.reveal2{opacity:1;transform:none;}
+      }
+
+      /* ============ HEADER ============ */
+      header{
+          position:fixed;top:0;left:0;right:0;z-index:1000;
+          padding:18px 0;
+          transition:all .35s ease;
+      }
+      header .container{display:flex;align-items:center;justify-content:space-between;gap:20px;
+          background:rgba(255,246,232,0.0);
+          border-radius:100px;
+          transition:all .35s ease;
+          padding:8px 8px 8px 8px;
+      }
+      header.scrolled{padding:10px 0;}
+      header.scrolled .container{
+          background:rgba(255,253,248,0.88);
+          backdrop-filter:blur(14px);
+          box-shadow:0 10px 30px rgba(36,20,41,0.1);
+          padding:8px 12px 8px 20px;
+      }
+      .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.5px;}
+      .logo .cat{width:34px;height:30px;color:var(--coral);}
+      .logo span.sub{display:block;font-family:'Manrope';font-weight:600;font-size:9px;letter-spacing:2px;color:var(--ink);opacity:.55;}
+      nav.main-nav{display:flex;gap:28px;align-items:center;}
+      nav.main-nav a{font-weight:700;font-size:14px;position:relative;padding:6px 0;}
+      nav.main-nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--coral);transition:width .3s ease;}
+      nav.main-nav a:hover::after{width:100%;}
+      .header-actions{display:flex;align-items:center;gap:12px;}
+      .lang-toggle{display:flex;background:var(--ink);border-radius:100px;padding:3px;position:relative;font-weight:800;font-size:12px;}
+      .lang-toggle button{color:var(--cream);padding:6px 12px;border-radius:100px;position:relative;z-index:2;transition:color .25s ease;}
+      .lang-toggle button.active{color:var(--ink);}
+      .lang-toggle .pill{position:absolute;top:3px;left:3px;width:38px;height:calc(100% - 6px);background:var(--mango);border-radius:100px;transition:transform .3s cubic-bezier(.3,.8,.3,1);z-index:1;}
+      body.en .lang-toggle .pill{transform:translateX(38px);}
+      .cta-btn{
+          background:var(--coral);color:#fff;font-weight:800;font-size:13px;
+          padding:12px 22px;border-radius:100px;box-shadow:0 8px 20px rgba(255,92,77,.35);
+          white-space:nowrap;transition:transform .25s ease, box-shadow .25s ease;
+      }
+      .cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,92,77,.45);}
+      .burger{display:none;width:26px;height:20px;position:relative;flex-shrink:0;}
+      .burger span{position:absolute;left:0;width:100%;height:2.4px;background:var(--ink);border-radius:2px;transition:.3s;}
+      .burger span:nth-child(1){top:0;}
+      .burger span:nth-child(2){top:9px;}
+      .burger span:nth-child(3){top:18px;}
+      .mobile-menu{position:fixed;inset:0;background:var(--ink);z-index:1500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transform:translateY(-100%);transition:transform .4s cubic-bezier(.3,.8,.3,1);}
+      .mobile-menu.open{transform:translateY(0);}
+      .mobile-menu a{color:var(--cream);font-family:'Unbounded';font-size:26px;font-weight:700;}
+      .mobile-menu .close-x{position:absolute;top:26px;right:28px;color:var(--cream);font-size:30px;}
+
+      /* ============ HERO ============ */
+      .hero{
+          min-height:100vh;
+          padding:150px 0 90px;
+          background:radial-gradient(circle at 15% 20%, #FFE7C2 0%, transparent 45%),
+          radial-gradient(circle at 85% 75%, #FFD6E6 0%, transparent 50%),
+          var(--cream);
+          overflow:hidden;
+          display:flex;align-items:center;
+      }
+      .hero .container{position:relative;z-index:3;}
+      .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.55;z-index:1;}
+      .blob.b1{width:420px;height:420px;background:var(--mango);top:-140px;left:-120px;animation:float1 14s ease-in-out infinite;}
+      .blob.b2{width:340px;height:340px;background:var(--bubble);bottom:-120px;right:-100px;animation:float2 16s ease-in-out infinite;}
+      .blob.b3{width:180px;height:180px;background:var(--coral);top:40%;right:8%;opacity:.25;animation:float1 10s ease-in-out infinite;}
+      @keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(30px,40px) rotate(15deg);}}
+      @keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(-30px,-30px) rotate(-12deg);}}
+
+      .hero-top{display:flex;justify-content:center;margin-bottom:22px;}
+      .eyebrow{
+          font-weight:800;font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;
+          background:var(--ink);color:var(--cream);padding:9px 20px;border-radius:100px;
+          display:inline-flex;gap:8px;align-items:center;
+          justify-content: center; text-align: center;
+      }
+
+      .hero h1{
+          text-align:center;font-size:clamp(64px,14vw,168px);line-height:.86;font-weight:900;
+          letter-spacing:-2px;color:var(--ink);
+      }
+      .hero h1 .outline{color:transparent;-webkit-text-stroke:3px var(--ink);}
+      .hero .tagline{
+          text-align:center;font-family:'Caveat';font-weight:700;font-size:clamp(26px,4vw,40px);
+          color:var(--coral-dark);margin-top:6px;transform:rotate(-2deg);
+      }
+      .hero p.desc{
+          max-width:560px;margin:26px auto 0;text-align:center;font-size:17px;line-height:1.65;color:rgba(36,20,41,.75);
+      }
+      .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:36px;flex-wrap:wrap;}
+      .btn-ghost{
+          border:2px solid var(--ink);padding:12px 26px;border-radius:100px;font-weight:800;font-size:14px;
+          transition:all .25s ease;display:inline-flex;align-items:center;gap:8px;
+      }
+      .btn-ghost:hover{background:var(--ink);color:var(--cream);}
+      .btn-solid{
+          background:var(--ink);color:var(--cream);padding:14px 28px;border-radius:100px;font-weight:800;font-size:14px;
+          display:inline-flex;align-items:center;gap:8px;transition:all .25s ease;
+      }
+      .btn-solid:hover{background:var(--coral);color:#fff;transform:translateY(-2px);}
+
+      /* sticky notes */
+      .sticker{
+          position:absolute;background:var(--paper);border:2px solid var(--ink);border-radius:16px;
+          padding:12px 16px;font-family:'Caveat';font-weight:700;font-size:19px;line-height:1.2;
+          box-shadow:5px 6px 0 var(--ink);z-index:4;max-width:190px;
+          animation:sway 6s ease-in-out infinite;
+      }
+      .sticker::before{content:"📌";position:absolute;top:-14px;left:14px;font-size:18px;transform:rotate(-15deg);}
+      .sticker.s1{top:20%;left:4%;transform:rotate(-6deg);animation-delay:.2s;}
+      .sticker.s2{top:14%;right:5%;transform:rotate(5deg);background:var(--mango);border-color:var(--ink);animation-delay:1s;}
+      .sticker.s3{bottom:12%;left:7%;transform:rotate(4deg);background:var(--bubble);animation-delay:.6s;}
+      .sticker.s4{bottom:8%;right:6%;transform:rotate(-4deg);animation-delay:1.4s;}
+      @keyframes sway{0%,100%{transform:translateY(0) rotate(var(--r,0deg));}50%{transform:translateY(-8px) rotate(var(--r,0deg));}}
+      @media (max-width:900px){.sticker{display:none;}}
+
+      /* stats strip */
+      .stats-strip{
+          background:var(--ink);color:var(--cream);padding:26px 0;margin-top:70px;
+      }
+      .stats-strip .container{display:flex;justify-content:center;gap: 40px;flex-wrap:wrap;gap:20px;}
+      .stat{display:flex;flex-direction:column;gap:2px;min-width:140px;}
+      .stat b{font-family:'Unbounded';font-size:22px;font-weight:800;color:var(--mango);}
+      .stat span{font-size:12px;opacity:.75;font-weight:600;letter-spacing:.5px;}
+
+      /* ============ MARQUEE ============ */
+      .marquee-strip{background:var(--coral);padding:16px 0;overflow:hidden;transform:rotate(-1.4deg);margin:-18px 0;position:relative;z-index:5;}
+      .marquee-track{display:flex;width:max-content;animation:scroll-left 26s linear infinite;}
+      .marquee-track span{
+          font-family:'Unbounded';font-weight:800;font-size:15px;color:#fff;letter-spacing:1px;
+          padding:0 26px;white-space:nowrap;display:flex;align-items:center;gap:26px;
+      }
+      .marquee-track span::after{content:"✦";font-size:14px;opacity:.7;}
+      @keyframes scroll-left{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+      /* ============ SECTION HEADINGS ============ */
+      .sec-head{max-width:640px;margin:0 auto 50px;text-align:center;}
+      .sec-head .kicker{
+          font-weight:800;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral-dark);
+          display:inline-block;margin-bottom:10px;
+      }
+      .sec-head h2{font-size:clamp(34px,5vw,54px);font-weight:800;line-height:1.05;}
+      .sec-head p{margin-top:14px;font-size:16px;color:rgba(36,20,41,.7);line-height:1.6;}
+
+      /* ============ ABOUT ============ */
+      .about{padding:120px 0 90px;}
+      .about-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start;}
+      .about-copy h2{font-size:clamp(30px,4.4vw,46px);font-weight:800;line-height:1.12;margin-bottom:18px;}
+      .about-copy p{font-size:16px;line-height:1.75;color:rgba(36,20,41,.75);margin-bottom:16px;}
+      .facade-card{
+          background:var(--ink);color:var(--cream);border-radius:var(--r-lg);padding:26px;
+          transform:rotate(2deg);box-shadow:var(--shadow);position:relative;
+      }
+      .facade-card .hand{font-size:24px;color:var(--mango);display:block;margin-bottom:6px;}
+      .facade-card p{font-size:14px;opacity:.8;line-height:1.6;}
+      .bubbles{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+      .bubble{
+          background:var(--paper);border:2px solid var(--ink);border-radius:var(--r-md);padding:22px;
+          transition:transform .3s ease, box-shadow .3s ease;
+      }
+      .bubble:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:6px 10px 0 var(--ink);}
+      .bubble .ic{font-size:30px;margin-bottom:10px;}
+      .bubble h3{font-family:'Unbounded';font-size:16px;font-weight:700;margin-bottom:6px;}
+      .bubble p{font-size:13px;color:rgba(36,20,41,.65);line-height:1.5;}
+      .bubble:nth-child(1){background:#FFEFD9;}
+      .bubble:nth-child(2){background:#FFE1EC;}
+      .bubble:nth-child(3){background:#E4EEFB;}
+      .bubble:nth-child(4){background:#FFD9D2;}
+      @media (max-width:880px){.about-wrap{grid-template-columns:1fr;}}
+
+      /* ============ MENU ============ */
+      .menu{padding:90px 0 110px;background:var(--paper);border-radius:60px 60px 0 0;margin-top:20px;}
+      .tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:46px;position:sticky;top:78px;z-index:50;background:var(--paper);padding:10px 0;}
+      .tab-btn{
+          padding:11px 20px;border-radius:100px;border:2px solid var(--ink);font-weight:700;font-size:13.5px;
+          background:transparent;transition:all .25s ease;white-space:nowrap;
+      }
+      .tab-btn.active{background:var(--ink);color:var(--cream);}
+      .tab-btn:hover{background:var(--ink);color:var(--cream);}
+      .tab-panel{display:none;}
+      .tab-panel.active{display:block;animation:fadein .4s ease;}
+      @keyframes fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+      .menu-note{
+          font-size:13px;font-weight:700;background:#FDECC8;border:2px dashed var(--ink);border-radius:var(--r-sm);
+          padding:12px 18px;margin:0 0 30px;display:block;line-height:1.5;
+      }
+      .discount-note{
+          display:inline-flex;align-items:center;gap:8px;background:var(--mango);border:2px solid var(--ink);
+          border-radius:100px;padding:9px 18px;font-weight:800;font-size:13.5px;margin-bottom:24px;
+      }
+      .menu-groups{display:grid;grid-template-columns:1fr 1fr;gap:0 46px;}
+      .menu-group{margin-bottom:32px;}
+      .menu-group h4{
+          font-family:'Unbounded';font-size:15.5px;font-weight:800;margin-bottom:2px;display:flex;justify-content:space-between;
+          align-items:baseline;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:9px;gap:10px;
+      }
+      .menu-group h4 small{font-size:10px;font-weight:700;opacity:.5;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+      .mrow{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px dotted var(--line);font-size:13.5px;}
+      .mrow .mname{font-weight:700;line-height:1.35;}
+      .mrow .mname .spice{color:var(--coral-dark);font-size:11px;}
+      .mrow .mname .leaf{color:#5c9d4b;font-size:11px;}
+      .mrow .mdesc{display:block;font-size:11.5px;font-weight:500;opacity:.55;margin-top:2px;line-height:1.4;}
+      .mrow .mprice{font-weight:800;color:var(--coral-dark);white-space:nowrap;font-size:13px;text-align:right;flex-shrink:0;}
+      .mrow .mprice small{display:block;font-size:9.5px;font-weight:700;opacity:.5;text-transform:uppercase;}
+      @media (max-width:760px){.menu-groups{grid-template-columns:1fr;}}
+
+      .sig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+      .sig-card{text-align:center;}
+      .sig-circle{
+          width:100%;aspect-ratio:1/1;border-radius:50%;border:4px solid var(--mango);
+          display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:12px;
+          transition:transform .3s ease;
+          position:relative;   /* NEW */
+          overflow:hidden;      /* NEW — clips the photo to the circle */
+      }
+      .hit-image {
+          width:100%;           /* NEW — was missing */
+          height:100%;          /* was 226px, now fills the circle exactly */
+          object-fit:cover;
+          border-radius:50%;
+          display:block;
+      }
+      .sig-card:hover .sig-circle{transform:scale(1.06) rotate(-4deg);}
+      .sig-card h4{font-family:'Unbounded';font-size:13.5px;font-weight:700;margin-bottom:3px;line-height:1.25;}
+      .sig-card p{font-size:11.5px;opacity:.55;margin-bottom:4px;}
+      .sig-card .price-tag{background:var(--coral);color:#fff;font-weight:800;font-size:12px;padding:5px 12px;border-radius:100px;display:inline-block;}
+      @media (max-width:760px){.sig-grid{grid-template-columns:repeat(2,1fr);}}
+
+      .lunch-head{
+          display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;text-align:center;
+      }
+      .lunch-head .stars{color:var(--coral);font-size:20px;}
+      .lunch-head p{width:100%;font-size:13px;color:rgba(36,20,41,.6);}
+      .lunch-grid{display:flex;flex-direction:column;gap:10px;max-width:720px;margin:0 auto;}
+      .lunch-row{
+          display:flex;align-items:center;gap:16px;background:var(--cream);border:2px solid var(--ink);border-radius:100px;
+          padding:10px 10px 10px 20px;flex-wrap:wrap;
+      }
+      .lunch-row .name{background:var(--coral);color:#fff;font-weight:800;font-size:13px;padding:7px 18px;border-radius:100px;white-space:nowrap;}
+      .lunch-row .perk{font-size:12px;opacity:.6;flex:1;min-width:140px;}
+      .lunch-row .price{font-family:'Unbounded';font-weight:800;color:var(--coral-dark);font-size:15px;padding-right:8px;}
+
+      /* ============ GALLERY ============ */
+      .gallery{padding:100px 0;background:var(--ink);color:var(--cream);}
+      .gallery .sec-head h2, .gallery .sec-head p{color:var(--cream);}
+      .gallery .sec-head p{opacity:.7;}
+      .follow-link{
+          display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-weight:800;font-size:14px;
+          border-bottom:2px solid var(--mango);padding-bottom:4px;color:var(--mango);
+      }
+      .ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+      .ig-card{
+          aspect-ratio:3/4;border-radius:var(--r-md);position:relative;overflow:hidden;
+          border:2px solid rgba(255,246,232,.15);cursor:default;
+          transition:transform .35s ease;
+      }
+      .ig-card:hover{transform:translateY(-8px) rotate(-1deg);}
+      .ig-card .icon-badge{
+          position:absolute;top:10px;right:10px;width:26px;height:26px;background:rgba(0,0,0,.35);
+          border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;z-index:3;
+      }
+      .ig-card .cap{
+          position:absolute;bottom:12px;left:12px;right:12px;font-family:'Caveat';font-weight:700;font-size:19px;
+          color:#fff;line-height:1.2;text-shadow:0 2px 6px rgba(0,0,0,.4);z-index:3;
+      }
+      .ig-card .grad{position:absolute;inset:0;background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.55) 100%);z-index:2;}
+      .ig-card .bg{position:absolute;inset:0;z-index:1;}
+      .ig1 .bg{background:linear-gradient(135deg,#FFC97A,#FF8A65);}
+      .ig2 .bg{background:linear-gradient(135deg,#FFD1E8,#FF8FBF);}
+      .ig3 .bg{background:linear-gradient(135deg,#BFE3FF,#5C9BD1);}
+      .ig4 .bg{background:linear-gradient(135deg,#F2E4C6,#C9A876);}
+      .ig5 .bg{background:linear-gradient(135deg,#D8F2C4,#8FBF6E);}
+      .ig6 .bg{background:linear-gradient(135deg,#FFD9CE,#FF6F5A);}
+      .ig7 .bg{background:linear-gradient(135deg,#E3D4F7,#B08FE0);}
+      .ig8 .bg{background:linear-gradient(135deg,#FFE3A8,#FFB648);}
+      @media (max-width:900px){.ig-grid{grid-template-columns:repeat(2,1fr);}}
+
+      /* ============ REVIEWS ============ */
+      .reviews{padding:110px 0;}
+      .review-track{display:flex;gap:22px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory;}
+      .review-track::-webkit-scrollbar{height:6px;}
+      .review-track::-webkit-scrollbar-thumb{background:var(--ink);border-radius:10px;}
+      .review-card{
+          scroll-snap-align:start;min-width:300px;max-width:320px;background:var(--paper);border:2px solid var(--ink);
+          border-radius:var(--r-md);padding:26px;flex-shrink:0;
+      }
+      .review-card .stars{color:var(--coral);letter-spacing:2px;margin-bottom:12px;font-size:15px;}
+      .review-card p.quote{font-size:14.5px;line-height:1.65;margin-bottom:18px;color:rgba(36,20,41,.8);}
+      .review-card .who{display:flex;align-items:center;gap:10px;}
+      .review-card .avatar{width:38px;height:38px;border-radius:50%;background:var(--mango);display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Unbounded';}
+      .review-card .who b{font-size:13.5px;display:block;}
+      .review-card .who span{font-size:12px;opacity:.6;}
+
+      /* ============ CONTACT ============ */
+      .contact{padding:0 0 110px;}
+      .contact-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;}
+      .info-card{background:var(--coral);color:#fff;border-radius:var(--r-lg);padding:42px;position:relative;overflow:hidden;}
+      .info-card h3{font-family:'Unbounded';font-size:26px;margin-bottom:22px;}
+      .info-row{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;}
+      .info-row .ic{font-size:20px;}
+      .info-row b{display:block;font-size:14.5px;margin-bottom:2px;}
+      .info-row span{font-size:13.5px;opacity:.85;}
+      .social-row{display:flex;gap:12px;margin-top:26px;}
+      .social-row a{background:#fff;color:var(--ink);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;transition:transform .25s ease;}
+      .social-row a:hover{transform:translateY(-4px) rotate(8deg);}
+      .map-card{border-radius:var(--r-lg);overflow:hidden;border:2px solid var(--ink);position:relative;min-height:380px;}
+      .map-card iframe{width:100%;height:100%;min-height:380px;border:0;filter:saturate(1.05);}
+      .map-pin{position:absolute;top:16px;left:16px;background:var(--ink);color:var(--cream);padding:8px 16px;border-radius:100px;font-weight:800;font-size:12.5px;z-index:5;display:flex;align-items:center;gap:6px;}
+      @media (max-width:900px){.contact-wrap{grid-template-columns:1fr;}}
+
+      /* ============ FOOTER ============ */
+      footer{background:var(--denim);color:var(--cream);padding:70px 0 26px;position:relative;overflow:hidden;}
+      .footer-cat{position:absolute;right:-40px;bottom:-40px;width:320px;height:280px;opacity:.08;color:var(--cream);}
+      .footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:46px;}
+      .footer-brand .logo{color:var(--cream);}
+      .footer-brand p{max-width:280px;font-size:13.5px;opacity:.65;margin-top:14px;line-height:1.6;}
+      .footer-cols{display:flex;gap:50px;flex-wrap:wrap;}
+      .footer-col h4{font-family:'Unbounded';font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;opacity:.6;}
+      .footer-col a, .footer-col span{display:block;font-size:14px;margin-bottom:10px;opacity:.85;}
+      .footer-bottom{border-top:1px solid rgba(255,246,232,.15);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;opacity:.55;}
+
+      /* ============ RESPONSIVE ============ */
+      @media (max-width:840px){
+          nav.main-nav, .header-actions .cta-btn{display:none;}
+          .burger{display:block;}
+          .hero{padding-top:130px;}
+      }
+      @media (max-width:600px){
+          .about-wrap, .dish-grid{grid-template-columns:1fr;}
+          .stats-strip .container{justify-content:flex-start;}
+      }
+  </style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <div class="container">
+    <a href="#hero" class="logo">
+      <svg class="cat" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18,42 L34,8 L46,36 Z" fill="currentColor"/>
+        <path d="M102,42 L86,8 L74,36 Z" fill="currentColor"/>
+        <rect x="18" y="30" width="84" height="58" rx="29" fill="currentColor"/>
+        <path d="M100,60 C118,58 118,80 100,80" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span>HERB<span class="sub">CAFÉ · BISHKEK</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="#about"><span class="lang-ru">О нас</span><span class="lang-en">About</span></a>
+      <a href="#menu"><span class="lang-ru">Меню</span><span class="lang-en">Menu</span></a>
+      <a href="#reviews"><span class="lang-ru">Отзывы</span><span class="lang-en">Reviews</span></a>
+      <a href="#contact"><span class="lang-ru">Контакты</span><span class="lang-en">Contacts</span></a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-toggle" id="langToggle">
+        <div class="pill"></div>
+        <button data-lang="ru" class="active">RU</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="#contact" class="cta-btn"><span class="lang-ru">Забронировать</span><span class="lang-en">Book a table</span></a>
+      <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-x" id="closeMobile">✕</div>
+  <a href="#about">About / О нас</a>
+  <a href="#menu">Menu / Меню</a>
+  <a href="#reviews">Reviews / Отзывы</a>
+  <a href="#contact">Contacts / Контакты</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="hero">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <div class="sticker s1"><span class="lang-ru">-30% на выпечку после 20:00 🥐</span><span class="lang-en">-30% on pastry after 8PM 🥐</span></div>
+  <div class="sticker s2"><span class="lang-ru">это слишком красиво и вкусно 😳</span><span class="lang-en">this is too pretty to eat 😳</span></div>
+  <div class="sticker s3"><span class="lang-ru">кастомизируем стакан 🧋</span><span class="lang-en">customize your cup 🧋</span></div>
+  <div class="sticker s4"><span class="lang-ru">мы вернулись 🐾</span><span class="lang-en">we're back 🐾</span></div>
+
+  <div class="container">
+    <div class="hero-top">
+      <div class="eyebrow"><span class="dot"></span><span class="lang-ru">корейская кухня · чайная лавка · бишкек</span><span class="lang-en">korean kitchen · tea house · bishkek</span></div>
+    </div>
+    <h1>H<span class="outline">E</span>RB</h1>
+    <p class="tagline"><span class="lang-ru">уютно. ярко. с любовью.</span><span class="lang-en">cozy. bright. korean-style.</span></p>
+    <p class="desc">
+      <span class="lang-ru">Рамен, кукси и рисовые боулы, свежая выпечка каждый день, чайная лавка и авторские коктейли с соджу — в самом фотогеничном кафе Бишкека.</span>
+      <span class="lang-en">Ramen, kuksi and rice bowls, fresh pastry every day, a cozy tea house and signature soju cocktails — in Bishkek's most photogenic café.</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn-solid">🍜 <span class="lang-ru">Смотреть меню</span><span class="lang-en">View Menu</span></a>
+      <a href="https://www.instagram.com/herbcafe.kg/" target="_blank" rel="noopener" class="btn-ghost">📷 <span class="lang-ru">Instagram</span><span class="lang-en">Instagram</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="container">
+    <div class="stat"><b>10:00–23:00</b><span class="lang-ru">ежедневно</span><span class="lang-en">daily</span></div>
+    <div class="stat"><b>ул. Токтогула 169</b><span class="lang-ru">в центре Бишкека</span><span class="lang-en">central Bishkek</span></div>
+  </div>
+</div>
+
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span><span class="lang-ru">РАМЕН И КУКСИ</span><span class="lang-en">RAMEN & KUKSI</span></span>
+    <span><span class="lang-ru">ЧАЙНАЯ ЛАВКА</span><span class="lang-en">TEA HOUSE</span></span>
+    <span><span class="lang-ru">СОДЖУ И КОКТЕЙЛИ</span><span class="lang-en">SOJU & COCKTAILS</span></span>
+    <span><span class="lang-ru">СВЕЖАЯ ВЫПЕЧКА</span><span class="lang-en">FRESH PASTRY</span></span>
+    <span><span class="lang-ru">МАНГО СМУЗИ</span><span class="lang-en">MANGO SMOOTHIE</span></span>
+    <span><span class="lang-ru">БИНГСУ И ДЕСЕРТЫ</span><span class="lang-en">BINGSU & DESSERTS</span></span>
+    <!-- duplicate for seamless loop -->
+    <span><span class="lang-ru">РАМЕН И КУКСИ</span><span class="lang-en">RAMEN & KUKSI</span></span>
+    <span><span class="lang-ru">ЧАЙНАЯ ЛАВКА</span><span class="lang-en">TEA HOUSE</span></span>
+    <span><span class="lang-ru">СОДЖУ И КОКТЕЙЛИ</span><span class="lang-en">SOJU & COCKTAILS</span></span>
+    <span><span class="lang-ru">СВЕЖАЯ ВЫПЕЧКА</span><span class="lang-en">FRESH PASTRY</span></span>
+    <span><span class="lang-ru">МАНГО СМУЗИ</span><span class="lang-en">MANGO SMOOTHIE</span></span>
+    <span><span class="lang-ru">БИНГСУ И ДЕСЕРТЫ</span><span class="lang-en">BINGSU & DESSERTS</span></span>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="about">
+  <div class="container about-wrap">
+    <div class="about-copy reveal">
+      <h2><span class="lang-ru">Что такое Herb?</span><span class="lang-en">What is Herb?</span></h2>
+      <p><span class="lang-ru">Herb — это маленький корейский уголок в центре Бишкека: рамен-бар, чайная лавка и пекарня в одном уютном пространстве с деревянными столами, синей керамикой и живыми цветами на подоконниках.</span>
+        <span class="lang-en">Herb is a small Korean corner in the middle of Bishkek: a ramen bar, tea house and bakery all in one cozy space with wooden tables, blue ceramics and fresh flowers on the windowsills.</span></p>
+      <p><span class="lang-ru">Мы обновили фасад и меню, но внутри всё осталось таким же тёплым — приходите проверить сами.</span>
+        <span class="lang-en">We refreshed the facade and the menu, but inside it's just as warm as before — come see for yourself.</span></p>
+
+    </div>
+    <div class="bubbles">
+      <div class="bubble reveal2" style="--rot:-1deg">
+        <div class="ic">🍜</div>
+        <h3><span class="lang-ru">Корейская кухня</span><span class="lang-en">Korean Cuisine</span></h3>
+        <p><span class="lang-ru">Рамен, кукси, воки и бибимбап — по классическим рецептам</span><span class="lang-en">Ramen, kuksi, rice bowls & bibimbap — classic recipes</span></p>
+      </div>
+      <div class="bubble reveal2" style="--rot:1deg">
+        <div class="ic">🍵</div>
+        <h3><span class="lang-ru">Чайная лавка</span><span class="lang-en">Tea House</span></h3>
+        <p><span class="lang-ru">Фруктовые чаи, матча и манго смузи с кастомным стаканом</span><span class="lang-en">Fruit teas, matcha and mango smoothies, cup fully customized</span></p>
+      </div>
+      <div class="bubble reveal2" style="--rot:1.5deg">
+        <div class="ic">🥃</div>
+        <h3><span class="lang-ru">Соджу и коктейли</span><span class="lang-en">Soju & Cocktails</span></h3>
+        <p><span class="lang-ru">Авторские напитки с соджу для вечерних встреч с друзьями</span><span class="lang-en">Signature soju drinks for evenings out with friends</span></p>
+      </div>
+      <div class="bubble reveal2" style="--rot:-1.5deg">
+        <div class="ic">🥐</div>
+        <h3><span class="lang-ru">Свежая выпечка</span><span class="lang-en">Fresh Pastry</span></h3>
+        <p><span class="lang-ru">Каждое утро из своей пекарни, скидка -30% после 20:00</span><span class="lang-en">Baked fresh every morning, -30% off after 8PM</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section id="menu" class="menu">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="kicker"><span class="lang-ru">полное меню</span><span class="lang-en">full menu</span></span>
+      <h2><span class="lang-ru">Выбирайте вкус</span><span class="lang-en">Pick your flavor</span></h2>
+      <p><span class="lang-ru">От рамена и кимпаба до соджу-коктейлей и десертов — всё меню Herb Cafe в одном месте. Цены указаны в сомах (KGS).</span>
+        <span class="lang-en">From ramen and kimbap to soju cocktails and desserts — the complete Herb Café menu in one place. Prices in Kyrgyz som (KGS).</span></p>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="hits"><span class="lang-ru">🔥 Хиты</span><span class="lang-en">🔥 Signature</span></button>
+      <button class="tab-btn" data-tab="ramen"><span class="lang-ru">Рамен и лапша</span><span class="lang-en">Ramen & Noodles</span></button>
+      <button class="tab-btn" data-tab="rice"><span class="lang-ru">Рис и боулы</span><span class="lang-en">Rice & Bowls</span></button>
+      <button class="tab-btn" data-tab="salads"><span class="lang-ru">Салаты и кимпаб</span><span class="lang-en">Salads & Kimbap</span></button>
+      <button class="tab-btn" data-tab="coffee"><span class="lang-ru">Кофе и чай</span><span class="lang-en">Coffee & Tea</span></button>
+      <button class="tab-btn" data-tab="drinks"><span class="lang-ru">Напитки</span><span class="lang-en">Cold Drinks</span></button>
+      <button class="tab-btn" data-tab="soju"><span class="lang-ru">Соджу и бар</span><span class="lang-en">Soju & Bar</span></button>
+      <button class="tab-btn" data-tab="desserts"><span class="lang-ru">Десерты</span><span class="lang-en">Desserts</span></button>
+      <button class="tab-btn" data-tab="lunch"><span class="lang-ru">★ Бизнес-ланч</span><span class="lang-en">★ Lunch Special</span></button>
+    </div>
+
+    <!-- HITS / SIGNATURE -->
+    <div class="tab-panel active" id="panel-hits">
+      <span class="menu-note">🐾 <span class="lang-ru">Авторские блюда Herb Cafe и то, что чаще всего рекомендуют гости.</span><span class="lang-en">Herb Café's signature dishes — the ones our guests recommend most.</span></span>
+      <div class="sig-grid">
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvJFe5xrvwR2WJcpSgr37KUqdvQReM4NMkM3Yf9CBJkpA-RSr7ZU5FDPP&s=10' alt=""></div><h4><span class="lang-ru">Чикен топпаб</span><span class="lang-en">Chicken Rice Bowl</span></h4><p><span class="lang-ru">тушёная курица с рисом</span><span class="lang-en">braised chicken over rice</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX7-ZaVmRsOCdCdaqUjPHNI2GZtAVgP1CuYHsRCvmlaZweBi3VYL4d6Q&s=10' alt=""></div><h4><span class="lang-ru">Чажанпаб</span><span class="lang-en">Jjajang Rice</span></h4><p><span class="lang-ru">рагу с овощами в чёрном соусе</span><span class="lang-en">veg ragout in black bean sauce</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://www.sostra.ru/upload/resize_cache/iblock/207/550_367_2/20741276a833a5b240b21ba3bc326fa4.jpg' alt=""></div><h4><span class="lang-ru">Кальмары топпаб <span class="spice">🌶</span></span><span class="lang-en">Squid Rice Bowl <span class="spice">🌶</span></span></h4><p><span class="lang-ru">жареные кальмары с рисом</span><span class="lang-en">fried squid over rice</span></p><span class="price-tag">380 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://korshop.ru/upload/iblock/88e/q2vcon2k56cc8452y68vbbmk7d7akpra.jpg' alt=""></div><h4><span class="lang-ru">Чампон рамен <span class="spice">🌶🌶</span></span><span class="lang-en">Champon Ramen <span class="spice">🌶🌶</span></span></h4><p><span class="lang-ru">острый рамен с морепродуктами</span><span class="lang-en">spicy seafood ramen</span></p><span class="price-tag">380 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsMRQFWmD57FwSOd0gZckaqw6fkBh1HhLKf05BoggDwgupuWux89wLhKs&s=10' alt=""></div><h4><span class="lang-ru">Тофу тангсу</span><span class="lang-en">Sweet & Sour Tofu</span></h4><p><span class="lang-ru">жареный тофу в корейском соусе</span><span class="lang-en">fried tofu, Korean sweet-sour sauce</span></p><span class="price-tag">430 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJDqtDjxw3KhPvLCFrLfKm0yP7k2jsdTtxS6KiEUsTQ_EdCoyYABKVeMeJ&s=10' alt=""></div><h4><span class="lang-ru">Кимчи салат <span class="leaf">🍀</span><span class="spice">🌶</span></span><span class="lang-en">Kimchi Salad <span class="leaf">🍀</span><span class="spice">🌶</span></span></h4><p><span class="lang-ru">свежий салат с острым кимчи</span><span class="lang-en">fresh salad with spicy kimchi</span></p><span class="price-tag">330 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPOI8fVi59fF-t-O2pTFHfLsM0u6f1SUVlgL0AcqyVrGHGEgLksR_YkxAa&s=10' alt=""></div><h4><span class="lang-ru">Крабовый поккымпаб</span><span class="lang-en">Crab Fried Rice</span></h4><p><span class="lang-ru">жареный рис с премиум крабом</span><span class="lang-en">fried rice with premium crab</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://korshop.ru/upload/medialibrary/b83/9swf8w0wss5l0bc686sdmgor1gd4ylh4.jpg' alt=""></div><h4><span class="lang-ru">Грибной топпаб <span class="leaf">🍀</span></span><span class="lang-en">Mushroom Rice Bowl <span class="leaf">🍀</span></span></h4><p><span class="lang-ru">веганский боул с разными грибами</span><span class="lang-en">vegan bowl, mixed mushrooms</span></p><span class="price-tag">360 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVKYA8BPRKL-ET0oP1YzYkgvniI-md0QMIS8aC5Hj2JpSNw9C9wjD7QFI&s=10' alt=""></div><h4><span class="lang-ru">Пулькоги топпаб</span><span class="lang-en">Bulgogi Rice Bowl</span></h4><p><span class="lang-ru">мясо с овощами на рисе</span><span class="lang-en">marinated beef & veg over rice</span></p><span class="price-tag">390 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7UVY21Tab88EVRp0xwUznFVT5zjZr5NYNhkI6GoEagbSagj_AQg9QFbDD&s=10'' alt=""></div><h4><span class="lang-ru">Пибимпаб <span class="spice">🌶</span></span><span class="lang-en">Bibimbap <span class="spice">🌶</span></span></h4><p><span class="lang-ru">боул с рисом и овощами</span><span class="lang-en">rice bowl with vegetables</span></p><span class="price-tag">340 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://n1s1.hsmedia.ru/35/ca/3f/35ca3f9bf3419c0fb49b1203d38fe2fc/1280x1280_0xO8faF4jO_5583004080527022632.jpg' alt=""></div><h4><span class="lang-ru">Токпокки <span class="spice">🌶🌶</span></span><span class="lang-en">Tteokbokki <span class="spice">🌶🌶</span></span></h4><p><span class="lang-ru">острые рисовые палочки</span><span class="lang-en">spicy rice cakes</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://img.iamcook.ru/2024/upl/recipes/byusers/misc/155499775/9a1c74f45952d5092f246f315ca3a7dd-2024.jpg' alt=""></div><h4><span class="lang-ru">Юкеджан <span class="spice">🌶🌶</span></span><span class="lang-en">Yukgaejang <span class="spice">🌶🌶</span></span></h4><p><span class="lang-ru">мясной суп с овощами</span><span class="lang-en">spicy beef & vegetable soup</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCDmzu9_SNGmK5wPno0LHzQ0j6szHnt2NA9QeFf_-2djW3w1KV-RGmLwQj&s=10'' alt=""></div><h4><span class="lang-ru">Плэйн кимпаб</span><span class="lang-en">Plain Kimbap</span></h4><p><span class="lang-ru">корейские роллы с овощами</span><span class="lang-en">Korean rice rolls with veg</span></p><span class="price-tag">290 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://kolomoka.ru/wp-content/uploads/2022/05/recipe_123_slivochnaja-pasta-s-kuricej-i-shpinatom.jpg' alt=""></div><h4><span class="lang-ru">Сливочная паста</span><span class="lang-en">Creamy Pasta</span></h4><p><span class="lang-ru">спагетти в сливочном соусе</span><span class="lang-en">spaghetti in cream sauce</span></p><span class="price-tag">390 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEthtoaTyHcwVOWhKU4GgzB1zFHZy4g4dlbiVjKr8vZUl-IP-i-m_YRPM&s=10' alt=""></div><h4><span class="lang-ru">Кимчи поккымпаб <span class="spice">🌶</span></span><span class="lang-en">Kimchi Fried Rice <span class="spice">🌶</span></span></h4><p><span class="lang-ru">жареный рис с кимчи</span><span class="lang-en">fried rice with kimchi</span></p><span class="price-tag">370 сом</span></div>
+        <div class="sig-card"><div class="sig-circle"><img class="hit-image" src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIGRYa7jWDon-ziqcyP1m67psjUYAwO1gqK9MmjZOy_A&s=10' alt=""></div><h4><span class="lang-ru">Яки соба</span><span class="lang-en">Yaki Soba</span></h4><p><span class="lang-ru">жареная лапша с мясом</span><span class="lang-en">fried noodles with meat</span></p><span class="price-tag">370 сом</span></div>
+      </div>
+    </div>
+
+    <!-- RAMEN & NOODLES -->
+    <div class="tab-panel" id="panel-ramen">
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Рамен</span><span class="lang-en">Ramen</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Плэйн рамен</span><span class="lang-en">Plain Ramen</span><span class="mdesc"><span class="lang-ru">+яйцо 25 · +сыр 35 · +мясо (пулькоги) 100 · +ассорти 140</span><span class="lang-en">+egg 25 · +cheese 35 · +bulgogi 100 · +full topping 140</span></span></span><span class="mprice">250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Удон рамен</span><span class="lang-en">Udon Ramen</span></span><span class="mprice">290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи рамен <span class="spice">🌶</span></span><span class="lang-en">Kimchi Ramen <span class="spice">🌶</span></span></span><span class="mprice">290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ламинарный рамен (с мясом)</span><span class="lang-en">Seaweed Ramen (with meat)</span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чампон рамен <span class="spice">🌶🌶</span> (морепродукты)</span><span class="lang-en">Champon Ramen <span class="spice">🌶🌶</span> (seafood)</span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Айс рамён <span class="mdesc"><span class="lang-ru">летнее меню</span><span class="lang-en">summer menu</span></span></span><span class="lang-en">Iced Ramen</span></span><span class="mprice">360 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Лапша</span><span class="lang-en">Noodles</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чанчи куксу</span><span class="lang-en">Janchi Kuksu</span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чапче</span><span class="lang-en">Japchae</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Юкеджан мён <span class="spice">🌶🌶</span></span><span class="lang-en">Yukgaejang Noodles <span class="spice">🌶🌶</span></span></span><span class="mprice">360 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Поккым удон (мясо) <span class="spice">🌶🌶</span></span><span class="lang-en">Stir-fried Udon (meat) <span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Поккым удон (морепродукты) <span class="spice">🌶🌶</span></span><span class="lang-en">Stir-fried Udon (seafood) <span class="spice">🌶🌶</span></span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Яки соба (мясо)</span><span class="lang-en">Yaki Soba (meat)</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Яки соба (морепродукты)</span><span class="lang-en">Yaki Soba (seafood)</span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пибим куксу <span class="spice">🌶</span></span><span class="lang-en">Bibim Kuksu <span class="spice">🌶</span></span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Айс кимчи куксу <span class="spice">🌶🌶</span></span><span class="lang-en">Iced Kimchi Kuksu <span class="spice">🌶🌶</span></span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Айс удон</span><span class="lang-en">Iced Udon</span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кунжутный калькуксу (с грибами)</span><span class="lang-en">Sesame Kalguksu (mushroom)</span></span><span class="mprice">360 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кунжутный калькуксу (с курицей)</span><span class="lang-en">Sesame Kalguksu (chicken)</span></span><span class="mprice">370 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Кимчи фуд</span><span class="lang-en">Kimchi Dishes</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи куксу (с мясом) <span class="spice">🌶</span></span><span class="lang-en">Kimchi Kuksu (with meat) <span class="spice">🌶</span></span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи тиге (с мясом) <span class="spice">🌶🌶</span></span><span class="lang-en">Kimchi Jjigae (with meat) <span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тофу тиге (с мясом) <span class="leaf">🍀</span><span class="spice">🌶🌶</span></span><span class="lang-en">Tofu Jjigae (with meat) <span class="leaf">🍀</span><span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тофу кимчи <span class="leaf">🍀</span><span class="spice">🌶🌶</span></span><span class="lang-en">Tofu Kimchi Stew <span class="leaf">🍀</span><span class="spice">🌶🌶</span></span></span><span class="mprice">390 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Суп из водорослей (с рисом)</span><span class="lang-en">Seaweed Soup (with rice)</span></span><span class="mprice">370 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RICE & BOWLS -->
+    <div class="tab-panel" id="panel-rice">
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Топпаб и пибимпаб</span><span class="lang-en">Rice Bowls & Bibimbap</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пибимпаб <span class="spice">🌶</span></span><span class="lang-en">Bibimbap <span class="spice">🌶</span></span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тобико пибимпаб <span class="spice">🌶</span></span><span class="lang-en">Tobiko Bibimbap <span class="spice">🌶</span></span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тунец пибимпаб <span class="spice">🌶</span></span><span class="lang-en">Tuna Bibimbap <span class="spice">🌶</span></span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кукпаб</span><span class="lang-en">Gukbap</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Юкеджан <span class="spice">🌶🌶</span></span><span class="lang-en">Yukgaejang <span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чапче топпаб</span><span class="lang-en">Japchae Rice Bowl</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чикен топпаб</span><span class="lang-en">Chicken Rice Bowl</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пулькоги топпаб</span><span class="lang-en">Bulgogi Rice Bowl</span></span><span class="mprice">390 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Крабовый поккымпаб</span><span class="lang-en">Crab Fried Rice</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кальмары топпаб <span class="spice">🌶</span></span><span class="lang-en">Squid Rice Bowl <span class="spice">🌶</span></span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи поккымпаб <span class="spice">🌶🌶</span></span><span class="lang-en">Kimchi Fried Rice <span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи топпаб (с мясом) <span class="spice">🌶🌶</span></span><span class="lang-en">Kimchi Rice Bowl (with meat) <span class="spice">🌶🌶</span></span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чажанпаб</span><span class="lang-en">Jjajang Rice</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Грибной топпаб <span class="leaf">🍀</span></span><span class="lang-en">Mushroom Rice Bowl <span class="leaf">🍀</span></span></span><span class="mprice">360 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Яичный топпаб <span class="leaf">🍀</span></span><span class="lang-en">Egg Rice Bowl <span class="leaf">🍀</span></span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Томатный скрембл <span class="leaf">🍀</span></span><span class="lang-en">Tomato Scramble <span class="leaf">🍀</span></span></span><span class="mprice">300 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Скрембл с тунцом</span><span class="lang-en">Tuna Scramble</span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Очазуке (с говядиной / с рисом)</span><span class="lang-en">Ochazuke (beef / rice)</span></span><span class="mprice">360 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Очазуке (с икрой / с рисом) <span class="mdesc"><span class="lang-ru">только в Herb Cafe</span><span class="lang-en">exclusive to Herb Café</span></span></span><span class="lang-en">Ochazuke (caviar / rice)</span></span><span class="mprice">380 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Сливочная паста и ризотто</span><span class="lang-en">Creamy Pasta & Risotto</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Паста: Курица</span><span class="lang-en">Pasta: Chicken</span></span><span class="mprice">390 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Паста: Кимчи (с мясом) <span class="spice">🌶</span></span><span class="lang-en">Pasta: Kimchi (with meat) <span class="spice">🌶</span></span></span><span class="mprice">420 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Паста: Морепродукты</span><span class="lang-en">Pasta: Seafood</span></span><span class="mprice">460 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ризотто: Курица</span><span class="lang-en">Risotto: Chicken</span></span><span class="mprice">390 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ризотто: Кимчи (с мясом) <span class="spice">🌶</span></span><span class="lang-en">Risotto: Kimchi (with meat) <span class="spice">🌶</span></span></span><span class="mprice">420 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ризотто: Морепродукты</span><span class="lang-en">Risotto: Seafood</span></span><span class="mprice">460 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чажанмён</span><span class="lang-en">Jjajangmyeon</span></span><span class="mprice">370 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Крем-супы</span><span class="lang-en">Cream Soups</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Грибной крем суп <span class="leaf">🍀</span></span><span class="lang-en">Mushroom Cream Soup <span class="leaf">🍀</span></span></span><span class="mprice">320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Куриный крем суп</span><span class="lang-en">Chicken Cream Soup</span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мясной крем суп</span><span class="lang-en">Meat Cream Soup</span></span><span class="mprice">350 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Тофу и токпокки</span><span class="lang-en">Tofu & Tteokbokki</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тофу топпаб <span class="leaf">🍀</span><span class="spice">🌶</span></span><span class="lang-en">Tofu Rice Bowl <span class="leaf">🍀</span><span class="spice">🌶</span></span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тофу Тангсу (с мясом)</span><span class="lang-en">Sweet & Sour Tofu (with meat)</span></span><span class="mprice">430 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Острый токпокки <span class="spice">🌶🌶</span></span><span class="lang-en">Spicy Tteokbokki <span class="spice">🌶🌶</span></span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соевый токпокки (с мясом)</span><span class="lang-en">Soy Tteokbokki (with meat)</span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чажан токпокки</span><span class="lang-en">Jjajang Tteokbokki</span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Сырный раппоки (острый) <span class="spice">🌶🌶</span></span><span class="lang-en">Cheese Rabokki (spicy) <span class="spice">🌶🌶</span></span></span><span class="mprice">410 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Розэ токпокки <span class="spice">🌶</span></span><span class="lang-en">Rosé Tteokbokki <span class="spice">🌶</span></span></span><span class="mprice">440 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Сливочные токпокки (кальмары)</span><span class="lang-en">Creamy Tteokbokki (squid)</span></span><span class="mprice">440 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALADS & KIMBAP -->
+    <div class="tab-panel" id="panel-salads">
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Салаты</span><span class="lang-en">Salads</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Яичный салат</span><span class="lang-en">Egg Salad</span></span><span class="mprice">280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тофу салат <span class="leaf">🍀</span></span><span class="lang-en">Tofu Salad <span class="leaf">🍀</span></span></span><span class="mprice">320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи салат <span class="leaf">🍀</span><span class="spice">🌶</span></span><span class="lang-en">Kimchi Salad <span class="leaf">🍀</span><span class="spice">🌶</span></span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Чикен салат</span><span class="lang-en">Chicken Salad</span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Крабовый салат</span><span class="lang-en">Crab Salad</span></span><span class="mprice">360 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Салат с тунцом</span><span class="lang-en">Tuna Salad</span></span><span class="mprice">430 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Кимпаб</span><span class="lang-en">Kimbap</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Плэйн кимпаб</span><span class="lang-en">Plain Kimbap</span></span><span class="mprice">290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Сырный кимпаб</span><span class="lang-en">Cheese Kimbap</span></span><span class="mprice">310 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи кимпаб <span class="leaf">🍀</span><span class="spice">🌶</span></span><span class="lang-en">Kimchi Kimbap <span class="leaf">🍀</span><span class="spice">🌶</span></span></span><span class="mprice">310 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Крабовый кимпаб</span><span class="lang-en">Crab Kimbap</span></span><span class="mprice">320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пулькоги кимпаб</span><span class="lang-en">Bulgogi Kimbap</span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тобико кимпаб</span><span class="lang-en">Tobiko Kimbap</span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимпаб с тунцом</span><span class="lang-en">Tuna Kimbap</span></span><span class="mprice">360 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Круассан-сендвичи</span><span class="lang-en">Croissant Sandwiches</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">С ветчиной и сыром</span><span class="lang-en">Ham & Cheese</span></span><span class="mprice">280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">С курицей</span><span class="lang-en">Chicken</span></span><span class="mprice">300 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">С пулькоги</span><span class="lang-en">Bulgogi</span></span><span class="mprice">310 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">С тунцом</span><span class="lang-en">Tuna</span></span><span class="mprice">350 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Тосты</span><span class="lang-en">Toasts</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тост ветчина-сыр</span><span class="lang-en">Ham-Cheese Toast</span></span><span class="mprice">270 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тост краб-сыр</span><span class="lang-en">Crab-Cheese Toast</span></span><span class="mprice">280 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Закуски</span><span class="lang-en">Snacks & Sides</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Рис</span><span class="lang-en">Steamed Rice</span></span><span class="mprice">100 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хлеб</span><span class="lang-en">Bread</span></span><span class="mprice">60 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кимчи (100г)</span><span class="lang-en">Kimchi (100g)</span></span><span class="mprice">110 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Арахис & чечел сыр</span><span class="lang-en">Peanuts & Chechil Cheese</span></span><span class="mprice">250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Начос</span><span class="lang-en">Nachos</span></span><span class="mprice">290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пулькоги в домашнем маринаде</span><span class="lang-en">House-marinated Bulgogi</span></span><span class="mprice">430 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Острый пулькоги <span class="spice">🌶</span></span><span class="lang-en">Spicy Bulgogi <span class="spice">🌶</span></span></span><span class="mprice">460 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COFFEE & TEA -->
+    <div class="tab-panel" id="panel-coffee">
+      <span class="menu-note">☕ <span class="lang-ru">В размере 0.5Л — двойной шот эспрессо. Во всех чаях и пуншах есть фрукты и ягоды.</span><span class="lang-en">The 0.5L size includes a double espresso shot. All teas & punches come with fresh fruit and berries.</span></span>
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Кофе</span><span class="lang-en">Coffee</span><small>hot/ice</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Эспрессо</span><span class="lang-en">Espresso</span></span><span class="mprice">140 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Американо</span><span class="lang-en">Americano</span></span><span class="mprice">170 / 180 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Латте</span><span class="lang-en">Latte</span></span><span class="mprice">220 / 230 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Капучино</span><span class="lang-en">Cappuccino</span></span><span class="mprice">220 / 230 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мокко</span><span class="lang-en">Mocha</span></span><span class="mprice">240 / 250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ореховый латте</span><span class="lang-en">Hazelnut Latte</span></span><span class="mprice">240 / 250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ванильный латте</span><span class="lang-en">Vanilla Latte</span></span><span class="mprice">250 / 260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Карамельный маккиато</span><span class="lang-en">Caramel Macchiato</span></span><span class="mprice">250 / 260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Какао</span><span class="lang-en">Cocoa</span></span><span class="mprice">220 / 230 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Кофе от Starbucks</span><span class="lang-en">Starbucks Beans</span><small>Американо hot/ice</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Эспрессо Рост <span class="mdesc"><span class="lang-ru">карамельные нотки, тёмная обжарка</span><span class="lang-en">caramel notes, dark roast</span></span></span><span class="lang-en">Espresso Roast</span></span><span class="mprice">180 / 190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пайк Плэйс <span class="mdesc"><span class="lang-ru">мягкий, шоколадный оттенок</span><span class="lang-en">smooth, chocolate notes</span></span></span><span class="lang-en">Pike Place</span></span><span class="mprice">180 / 190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Колумбия <span class="mdesc"><span class="lang-ru">ореховый аромат, средняя обжарка</span><span class="lang-en">nutty aroma, medium roast</span></span></span><span class="lang-en">Colombia</span></span><span class="mprice">180 / 190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Санни Дэй бленд <span class="mdesc"><span class="lang-ru">сухие ягоды, ванильный аромат</span><span class="lang-en">dried berries, vanilla aroma</span></span></span><span class="lang-en">Sunny Day Blend</span></span><span class="mprice">180 / 190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хаус бленд <span class="mdesc"><span class="lang-ru">без кофеина</span><span class="lang-en">decaf</span></span></span><span class="lang-en">House Blend</span></span><span class="mprice">180 / 190 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Травяные чаи</span><span class="lang-en">Herbal Teas</span><small>hot/ice, 0.5Л/1Л</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Эрл Грей / Жасмин</span><span class="lang-en">Earl Grey / Jasmine</span></span><span class="mprice">150/250 · 170/270 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ройбосс / Роуз флауэр / Лемонграсс / Маттэ / Джинжер</span><span class="lang-en">Rooibos / Rose / Lemongrass / Mate / Ginger</span></span><span class="mprice">180/290 · 200/320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Лавэндер / Гибискусс / Кэмомайл / Розмари / Минт / Ханибуш</span><span class="lang-en">Lavender / Hibiscus / Chamomile / Rosemary / Mint / Honeybush</span></span><span class="mprice">190/310 · 210/340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Комбуча (клубника-киви / манго-гуава / шайн мускат / ананас)</span><span class="lang-en">Kombucha (strawberry-kiwi / mango-guava / shine muscat / pineapple)</span></span><span class="mprice">450мл = 190 сом</span></div>
+          <span class="mdesc" style="display:block;margin-top:8px;"><span class="lang-ru">Происхождение чаёв: маттэ и ройбосс — ЮАР, лемонграсс — Таиланд, гибискус — Нигерия, кэмомайл — Египет, розмари — Марокко, лавэндер — Франция.</span><span class="lang-en">Tea origins: mate & rooibos — South Africa, lemongrass — Thailand, hibiscus — Nigeria, chamomile — Egypt, rosemary — Morocco, lavender — France.</span></span>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Молочные чаи и пунши</span><span class="lang-en">Milk Teas & Punches</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Молочный чай: Эрл Грей / Жасмин</span><span class="lang-en">Milk Tea: Earl Grey / Jasmine</span></span><span class="mprice">190/200 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Молочный чай: Ройбосс / Роуз / Лемонграсс / Маттэ / Джинжер</span><span class="lang-en">Milk Tea: Rooibos / Rose / Lemongrass / Mate / Ginger</span></span><span class="mprice">220/230 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Молочный чай: Лавэндер / Гибискусс / Кэмомайл / Розмари / Минт / Ханибуш</span><span class="lang-en">Milk Tea: Lavender / Hibiscus / Chamomile / Rosemary / Mint / Honeybush</span></span><span class="mprice">230/240 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пунш: Эрл Грей / Жасмин <span class="mdesc"><span class="lang-ru">только айс</span><span class="lang-en">iced only</span></span></span><span class="lang-en">Punch: Earl Grey / Jasmine</span></span><span class="mprice">240 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пунш: Джинжер / Ройбосс / Роуз / Лемонграсс / Маттэ</span><span class="lang-en">Punch: Ginger / Rooibos / Rose / Lemongrass / Mate</span></span><span class="mprice">260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пунш: Лавэндер / Гибискусс / Кэмомайл / Розмари / Минт / Ханибуш</span><span class="lang-en">Punch: Lavender / Hibiscus / Chamomile / Rosemary / Mint / Honeybush</span></span><span class="mprice">270 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Новые латте</span><span class="lang-en">New Lattes</span><small>hot/ice, 0.5Л</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Гогума латте (сладкий картофель)</span><span class="lang-en">Sweet Potato Latte</span></span><span class="mprice">220/230 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Тыквенный латте</span><span class="lang-en">Pumpkin Latte</span></span><span class="mprice">220/230 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Матча латте</span><span class="lang-en">Matcha Latte</span></span><span class="mprice">250/260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Матча латте (банан / клубника)</span><span class="lang-en">Matcha Latte (banana / strawberry)</span></span><span class="mprice">270/280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Матча латте (манго)</span><span class="lang-en">Matcha Latte (mango)</span></span><span class="mprice">280/290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ходзича латте <span class="mdesc"><span class="lang-ru">обжаренная матча, орехово-карамельный вкус</span><span class="lang-en">roasted matcha, nutty-caramel flavor</span></span></span><span class="lang-en">Hojicha Latte</span></span><span class="mprice">250/260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ходзича латте (банан)</span><span class="lang-en">Hojicha Latte (banana)</span></span><span class="mprice">270/280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Ханибуш <span class="mdesc"><span class="lang-ru">Южно-Африканский чай, полезен для здоровья женщин</span><span class="lang-en">South African tea, beneficial for women's health</span></span></span><span class="lang-en">Honeybush Tea</span></span><span class="mprice">190/210 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Медовый чай: цитрусовый / финиковый</span><span class="lang-en">Honey Tea: citrus / date</span></span><span class="mprice">240/250 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLD DRINKS -->
+    <div class="tab-panel" id="panel-drinks">
+      <span class="menu-note">🧋 <span class="lang-ru">В любой напиток можно добавить тапиоку — 100г / 60 сом. Лимонады готовим на основе свежих фруктов.</span><span class="lang-en">Add tapioca pearls to any drink — 100g / 60 som. Our lemonades are made with fresh fruit.</span></span>
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Смузи и мороженое латте</span><span class="lang-en">Smoothies & Ice Cream Lattes</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мороженое латте: ваниль / шоколад / клубника / банан</span><span class="lang-en">Ice Cream Latte: vanilla / chocolate / strawberry / banana</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Смузи клубничный</span><span class="lang-en">Strawberry Smoothie</span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Смузи банановый</span><span class="lang-en">Banana Smoothie</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Манго смузи 🥭</span><span class="lang-en">Mango Smoothie 🥭</span></span><span class="mprice">350 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Баббл ти и баббл пунш</span><span class="lang-en">Bubble Tea & Bubble Punch</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Баббл ти: Эрл Грей / Жасмин</span><span class="lang-en">Bubble Tea: Earl Grey / Jasmine</span></span><span class="mprice">240/250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Баббл ти: Роуз / Кэмомайл / Минт / Цитрусовый</span><span class="lang-en">Bubble Tea: Rose / Chamomile / Mint / Citrus</span></span><span class="mprice">280/290 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Баббл пунш: Эрл Грей / Жасмин <span class="mdesc"><span class="lang-ru">только айс</span><span class="lang-en">iced only</span></span></span><span class="lang-en">Bubble Punch: Earl Grey / Jasmine</span></span><span class="mprice">280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Баббл пунш: Роуз / Кэмомайл / Гибискусс / Минт</span><span class="lang-en">Bubble Punch: Rose / Chamomile / Hibiscus / Mint</span></span><span class="mprice">310 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Лимонады</span><span class="lang-en">Lemonades</span><small>0.5Л/1Л</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Лимонный / Апельсиновый</span><span class="lang-en">Lemon / Orange</span></span><span class="mprice">250/420 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Клубничный / Смородиновый</span><span class="lang-en">Strawberry / Blackcurrant</span></span><span class="mprice">260/440 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Детокс-эйд: гранат / грейпфрут / голубика</span><span class="lang-en">Detox-ade: pomegranate / grapefruit / blueberry</span></span><span class="mprice">320 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Простые напитки</span><span class="lang-en">Soft Drinks</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Кока-кола / Спрайт / Фьюс чай</span><span class="lang-en">Coca-Cola / Sprite / Fuze Tea</span></span><span class="mprice">110/160 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пико</span><span class="lang-en">Piko</span></span><span class="mprice">130 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Вода с газом / без газа</span><span class="lang-en">Sparkling / Still Water</span></span><span class="mprice">60/95 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOJU & BAR -->
+    <div class="tab-panel" id="panel-soju">
+      <span class="menu-note">🥃 <span class="lang-ru">Заказы алкоголя принимаются за баром.</span><span class="lang-en">Alcoholic drinks are ordered directly at the bar.</span></span>
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Соджу</span><span class="lang-en">Soju</span><small>бутылка</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Классический соджу</span><span class="lang-en">Classic Soju</span></span><span class="mprice">790 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Орэндж / Лимон / Берри соджу</span><span class="lang-en">Orange / Lemon / Berry Soju</span></span><span class="mprice">870 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Клубника соджу</span><span class="lang-en">Strawberry Soju</span></span><span class="mprice">890 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Соджу коктейли</span><span class="lang-en">Soju Cocktails</span><small>380мл</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соджу Айс ти</span><span class="lang-en">Soju Iced Tea</span></span><span class="mprice">310 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соджу Эйд</span><span class="lang-en">Soju-ade</span></span><span class="mprice">330 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соджу Синдерелла</span><span class="lang-en">Soju Cinderella</span></span><span class="mprice">340 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соджу Санрайз</span><span class="lang-en">Soju Sunrise</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Соджу Мохито</span><span class="lang-en">Soju Mojito</span></span><span class="mprice">370 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Виски Хайбол (эрл грэй / имбирь) <span class="mdesc"><span class="lang-ru">трендовый корейский коктейль на основе виски и содовой</span><span class="lang-en">trendy Korean whiskey & soda cocktail</span></span></span><span class="lang-en">Whiskey Highball (Earl Grey / Ginger)</span></span><span class="mprice">330 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Пиво</span><span class="lang-en">Beer</span><small>бутылка</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Арпа</span><span class="lang-en">Arpa</span></span><span class="mprice">220 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Бад</span><span class="lang-en">Bud</span></span><span class="mprice">250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хайнекен</span><span class="lang-en">Heineken</span></span><span class="mprice">280 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Стелла</span><span class="lang-en">Stella</span></span><span class="mprice">300 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хугарден</span><span class="lang-en">Hoegaarden</span></span><span class="mprice">310 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Корона</span><span class="lang-en">Corona</span></span><span class="mprice">320 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Пивные коктейли ("-Эйд")</span><span class="lang-en">Beer Cocktails ("-ade")</span><small>бутылка</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Арпа-Эйд</span><span class="lang-en">Arpa-ade</span></span><span class="mprice">320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Бад-Эйд</span><span class="lang-en">Bud-ade</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хайнекен-Эйд</span><span class="lang-en">Heineken-ade</span></span><span class="mprice">380 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Стелла-Эйд</span><span class="lang-en">Stella-ade</span></span><span class="mprice">400 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Хугарден-Эйд</span><span class="lang-en">Hoegaarden-ade</span></span><span class="mprice">410 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Корона-Эйд</span><span class="lang-en">Corona-ade</span></span><span class="mprice">420 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Вино</span><span class="lang-en">Wine</span><small>бокал 125мл/бутылка</small></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Торрес Сан Валентин (белое)</span><span class="lang-en">Torres San Valentin (white)</span></span><span class="mprice">310/1700 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Арома де Франс (красное)</span><span class="lang-en">Aroma de France (red)</span></span><span class="mprice">310/1700 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Домашнее вино (бел./красн.)</span><span class="lang-en">House Wine (white/red)</span></span><span class="mprice">190/1200 сом·л</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мартини Асти (игристое)</span><span class="lang-en">Martini Asti (sparkling)</span></span><span class="mprice">1700 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Винные коктейли</span><span class="lang-en">Wine Cocktails</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Сангрия</span><span class="lang-en">Sangria</span></span><span class="mprice">360мл = 300 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Сангрия-Эйд</span><span class="lang-en">Sangria-ade</span></span><span class="mprice">450мл = 320 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Глинтвейн</span><span class="lang-en">Mulled Wine</span></span><span class="mprice">420мл = 320 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Слабое пиво и энергетики</span><span class="lang-en">Low-alcohol Beer & Energy Drinks</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Гараж / Эсса</span><span class="lang-en">Garage / Essa</span></span><span class="mprice">210 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Редбулл</span><span class="lang-en">Red Bull</span></span><span class="mprice">220 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="tab-panel" id="panel-desserts">
+      <span class="menu-note">🍰 <span class="lang-ru">Больше десертов есть на витрине — заходите посмотреть!</span><span class="lang-en">More desserts are on display at the counter — come take a look!</span></span>
+      <div class="menu-groups">
+        <div class="menu-group">
+          <h4><span class="lang-ru">Десерты</span><span class="lang-en">Desserts</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Печенье</span><span class="lang-en">Cookie</span></span><span class="mprice">90 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Вупи пай</span><span class="lang-en">Whoopie Pie</span></span><span class="mprice">100 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Круассан</span><span class="lang-en">Croissant</span></span><span class="mprice">130 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Пирог</span><span class="lang-en">Pie</span></span><span class="mprice">160 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мадонна</span><span class="lang-en">Madonna Cake</span></span><span class="mprice">180 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Карамельный</span><span class="lang-en">Caramel Dessert</span></span><span class="mprice">190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Плэйн красный бархат</span><span class="lang-en">Plain Red Velvet</span></span><span class="mprice">190 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Банановые вафли</span><span class="lang-en">Banana Waffles</span></span><span class="mprice">260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Крупный моти</span><span class="lang-en">Large Mochi</span></span><span class="mprice">250 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Котик пудинг 🐱</span><span class="lang-en">Cat Pudding 🐱</span></span><span class="mprice">170–180 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Корейская выпечка (ассорти)</span><span class="lang-en">Korean Pastry Assortment</span></span><span class="mprice">190–240 сом</span></div>
+        </div>
+        <div class="menu-group">
+          <h4><span class="lang-ru">Торты</span><span class="lang-en">Cakes</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Брауни</span><span class="lang-en">Brownie</span></span><span class="mprice">270 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Нью-Йорк чизкейк</span><span class="lang-en">New York Cheesecake</span></span><span class="mprice">280 сом</span></div>
+          <h4 style="margin-top:26px;"><span class="lang-ru">Летние десерты</span><span class="lang-en">Summer Desserts</span></h4>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Аффогато (кофе / матча)</span><span class="lang-en">Affogato (coffee / matcha)</span></span><span class="mprice">260 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мороженое</span><span class="lang-en">Ice Cream</span></span><span class="mprice">300 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Плэйн пат бингсу</span><span class="lang-en">Plain Patbingsu</span></span><span class="mprice">350 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Фрукты пат бингсу</span><span class="lang-en">Fruit Patbingsu</span></span><span class="mprice">420 сом</span></div>
+          <div class="mrow"><span class="mname"><span class="lang-ru">Мороженое вафли</span><span class="lang-en">Ice Cream Waffles</span></span><span class="mprice">280 сом</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUNCH -->
+    <div class="tab-panel" id="panel-lunch">
+      <div class="lunch-head">
+        <span class="stars">★</span>
+        <h3 class="display" style="font-size:22px;font-weight:800;"><span class="lang-ru">Бизнес-ланч 11:30–14:30</span><span class="lang-en">Lunch Special 11:30AM–2:30PM</span></h3>
+        <span class="stars">★</span>
+        <p><span class="lang-ru">Только понедельник–пятница · чай и вафли к каждому блюду бесплатно · не действует в выходные и праздники</span><span class="lang-en">Weekdays only · free tea & waffles with every dish · not valid on weekends or holidays</span></p>
+      </div>
+      <div class="lunch-grid">
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Рамен</span><span class="lang-en">Ramen</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">230 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Плэйн кимпаб</span><span class="lang-en">Plain Kimbap</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">270 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Чанчи куксу</span><span class="lang-en">Janchi Kuksu</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">300 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Грибной крем суп</span><span class="lang-en">Mushroom Cream Soup</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">300 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Пибимпаб</span><span class="lang-en">Bibimbap</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">320 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Токпокки (острый)</span><span class="lang-en">Tteokbokki (spicy)</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">330 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Юкеджан</span><span class="lang-en">Yukgaejang</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">330 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Чажанпаб</span><span class="lang-en">Jjajang Rice</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">330 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Суп из водорослей</span><span class="lang-en">Seaweed Soup</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">330 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Пулькоги топпаб</span><span class="lang-en">Bulgogi Rice Bowl</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">350 сом</span></div>
+        <div class="lunch-row"><span class="name"><span class="lang-ru">Тунец пибимпаб</span><span class="lang-en">Tuna Bibimbap</span></span><span class="perk"><span class="lang-ru">чай и вафли бесплатно</span><span class="lang-en">free tea & waffles</span></span><span class="price">350 сом</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section id="reviews" class="reviews">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="kicker"><span class="lang-ru">отзывы гостей</span><span class="lang-en">guest reviews</span></span>
+      <h2><span class="lang-ru">Нам доверяют вкус</span><span class="lang-en">Trusted with good taste</span></h2>
+    </div>
+    <div class="review-track">
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote"><span class="lang-ru">Хожу сюда за рамен и атмосферой — фото получаются сами, а бульон обжигающе вкусный.</span><span class="lang-en">I come here for the ramen and the vibe — the photos take themselves and the broth is scorching hot and delicious.</span></p>
+        <div class="who"><div class="avatar">Т</div><div><b>Тимур, 27</b><span><span class="lang-ru">завсегдатай</span><span class="lang-en">regular</span></span></div></div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote"><span class="lang-ru">Лучшая корейская кухня в городе, ужин каждый раз как маленький праздник.</span><span class="lang-en">Best Korean food in town, every dinner here feels like a small celebration.</span></p>
+        <div class="who"><div class="avatar">А</div><div><b>Алина, 24</b><span><span class="lang-ru">блогер</span><span class="lang-en">blogger</span></span></div></div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote"><span class="lang-ru">Милейшее место для встреч с друзьями вечером, коктейли с соджу просто огонь.</span><span class="lang-en">The coziest spot for evening hangouts with friends, the soju cocktails are amazing.</span></p>
+        <div class="who"><div class="avatar">Д</div><div><b>Дария, 22</b><span><span class="lang-ru">студентка</span><span class="lang-en">student</span></span></div></div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="quote"><span class="lang-ru">Взяли выпечку после 20:00 со скидкой — свежая, будто час назад из печи.</span><span class="lang-en">Grabbed pastry after 8PM with the discount — tasted like it just came out of the oven.</span></p>
+        <div class="who"><div class="avatar">Н</div><div><b>Нурлан, 29</b><span><span class="lang-ru">сосед по кварталу</span><span class="lang-en">neighbor</span></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="kicker"><span class="lang-ru">будем рады видеть</span><span class="lang-en">we'd love to see you</span></span>
+      <h2><span class="lang-ru">Найти и забронировать</span><span class="lang-en">Find us & book a table</span></h2>
+    </div>
+    <div class="contact-wrap">
+      <div class="info-card reveal">
+        <h3><span class="lang-ru">Контакты</span><span class="lang-en">Contact Info</span></h3>
+        <div class="info-row"><div class="ic">📍</div><div><b><span class="lang-ru">Адрес</span><span class="lang-en">Address</span></b><span><span class="lang-ru">ул. Токтогула, 169, Бишкек</span><span class="lang-en">169 Toktogul St, Bishkek</span></span></div></div>
+        <div class="info-row"><div class="ic">🕒</div><div><b><span class="lang-ru">Часы работы</span><span class="lang-en">Hours</span></b><span><span class="lang-ru">Ежедневно 10:00–23:00 · бизнес-ланч 11:30–14:30</span><span class="lang-en">Daily 10AM–11PM · lunch special 11:30AM–2:30PM</span></span></div></div>
+        <div class="info-row"><div class="ic">📞</div><div><b><span class="lang-ru">Телефон</span><span class="lang-en">Phone</span></b><span>+996 500 00 00 00</span></div></div>
+        <div class="info-row"><div class="ic">💬</div><div><b><span class="lang-ru">Instagram</span><span class="lang-en">Instagram</span></b><span>@herbcafe.kg</span></div></div>
+        <div class="social-row">
+          <a href="https://www.instagram.com/herbcafe.kg/" target="_blank" rel="noopener">IG</a>
+          <a href="https://2gis.kg/bishkek/firm/70000001036765392" target="_blank" rel="noopener">2Г</a>
+          <a href="tel:+996500000000">☏</a>
+        </div>
+      </div>
+      <div class="map-card reveal">
+        <div class="map-pin">📍 <span class="lang-ru">мы тут</span><span class="lang-en">we're here</span></div>
+        <iframe src="https://www.google.com/maps?q=Бишкек,+улица+Токтогула+169&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <svg class="footer-cat" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18,42 L34,8 L46,36 Z" fill="currentColor"/>
+    <path d="M102,42 L86,8 L74,36 Z" fill="currentColor"/>
+    <rect x="18" y="30" width="84" height="58" rx="29" fill="currentColor"/>
+    <path d="M100,60 C118,58 118,80 100,80" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/>
+  </svg>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <svg class="cat" viewBox="0 0 120 100" width="30" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18,42 L34,8 L46,36 Z" fill="currentColor"/>
+            <path d="M102,42 L86,8 L74,36 Z" fill="currentColor"/>
+            <rect x="18" y="30" width="84" height="58" rx="29" fill="currentColor"/>
+          </svg>
+          <span>HERB</span>
+        </div>
+        <p><span class="lang-ru">Корейская кухня, чайная лавка и пекарня в центре Бишкека. Заходите на рамен, оставайтесь на соджу.</span>
+          <span class="lang-en">Korean kitchen, tea house and bakery in the heart of Bishkek. Come for the ramen, stay for the soju.</span></p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4><span class="lang-ru">Навигация</span><span class="lang-en">Navigate</span></h4>
+          <a href="#about"><span class="lang-ru">О нас</span><span class="lang-en">About</span></a>
+          <a href="#menu"><span class="lang-ru">Меню</span><span class="lang-en">Menu</span></a>
+          <a href="#reviews"><span class="lang-ru">Отзывы</span><span class="lang-en">Reviews</span></a>
+        </div>
+        <div class="footer-col">
+          <h4><span class="lang-ru">Контакты</span><span class="lang-en">Contacts</span></h4>
+          <span><span class="lang-ru">ул. Токтогула, 169</span><span class="lang-en">169 Toktogul St</span></span>
+          <span>+996 500 00 00 00</span>
+          <a href="https://www.instagram.com/herbcafe.kg/" target="_blank" rel="noopener">@herbcafe.kg</a>
+        </div>
+        <div class="footer-col">
+          <h4><span class="lang-ru">Язык</span><span class="lang-en">Language</span></h4>
+          <a href="#" data-lang-footer="ru">Русский</a>
+          <a href="#" data-lang-footer="en">English</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Herb Café Bishkek</span>
+      <span><span class="lang-ru">Сделано с ❤️ и рамен-бульоном</span><span class="lang-en">Made with ❤️ and ramen broth</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ===== YEAR =====
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ===== LANGUAGE TOGGLE =====
+  function setLang(lang){
+    document.body.classList.toggle('en', lang === 'en');
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+  document.getElementById('langToggle').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    setLang(btn.dataset.lang);
+  });
+  document.querySelectorAll('[data-lang-footer]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      setLang(a.dataset.langFooter);
+    });
+  });
+
+  // ===== HEADER SCROLL STATE =====
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', ()=>{
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ===== MOBILE MENU =====
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', ()=> mobileMenu.classList.add('open'));
+  document.getElementById('closeMobile').addEventListener('click', ()=> mobileMenu.classList.remove('open'));
+  mobileMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> mobileMenu.classList.remove('open')));
+
+  // ===== MENU TABS =====
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ===== SCROLL REVEAL =====
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal, .reveal2').forEach(el=> io.observe(el));
+</script>
+</body>
+</html>
